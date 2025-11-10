@@ -12,6 +12,8 @@ build/
 /ios/Flutter/Flutter.podspec
 /ios/ServiceDefinitions.json
 
+/PP_NODE/node_modules
+
 # Android
 /android/.gradle/
 /android/app/debug.keystore
