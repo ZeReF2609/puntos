@@ -33,6 +33,14 @@ class AppColors {
   static const Color warning = Color(0xFFFF9800);
   static const Color error = Color(0xFFF44336);
   static const Color info = Color(0xFF2196F3);
+  static const Color danger = Color(0xFFFF4C4C);
+
+  static const Color themeBgMenu = Color(0xFF383C48);
+  static const Color themeBgMenuHover = Color(0xFF53596C);
+  // Grises del sistema
+  static const Color themeGray = Color(0xFFCACACA);
+  static const Color themeGrayDark = Color(0xFF58595C);
+  static const Color themeBlack = Color(0xFF212121);
 
   // Bordes y dividers
   static const Color border = Color(0xFFE0E0E0);

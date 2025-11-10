@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:puntospionier/shared/shared.dart' hide AuthService;
 import '../../app/constants/app_colors.dart';
 import '../../shared/widgets/custom_text_field.dart';
 import 'auth_provider.dart';
+import '../../shared/services/auth_service.dart';
 
 // Intent personalizado para manejar el envío del formulario
 class SubmitFormIntent extends Intent {
@@ -83,21 +85,22 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
   Future<void> _handleLogin() async {
     if (!_loginFormKey.currentState!.validate()) return;
 
-    final authProvider = Provider.of<AuthProvider>(context, listen: false);
-    final success = await authProvider.login(
-      _dniLoginController.text,
-      _passwordController.text,
-    );
+    try {
+      // Llamas directamente al servicio
+      final loginService = AuthService();
+      final loginResponse = await loginService.login(
+        _dniLoginController.text,
+        _passwordController.text,
+      );
 
-    if (mounted) {
-      if (success) {
+      if (!mounted) return;
+
+      if (loginResponse.success && loginResponse.data != null) {
         Navigator.pushReplacementNamed(context, '/home');
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(
-              authProvider.errorMessage ?? 'Error de autenticación',
-            ),
+            content: Text(loginResponse.message),
             backgroundColor: Colors.red,
             behavior: SnackBarBehavior.floating,
             shape: RoundedRectangleBorder(
@@ -107,6 +110,14 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
           ),
         );
       }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error inesperado: $e'),
+          backgroundColor: Colors.red,
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
     }
   }
 

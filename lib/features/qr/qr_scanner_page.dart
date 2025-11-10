@@ -234,36 +234,6 @@ class _QrScannerPageState extends State<QrScannerPage> {
                       }
                     }
                   },
-                  errorBuilder: (context, error, child) {
-                    return Container(
-                      color: Colors.black,
-                      child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.error, color: Colors.red, size: 64),
-                            const SizedBox(height: 16),
-                            Text(
-                              'Error de cámara',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              'No se pudo acceder a la cámara',
-                              style: TextStyle(
-                                color: Colors.white70,
-                                fontSize: 14,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
                 ),
 
                 Positioned.fill(
