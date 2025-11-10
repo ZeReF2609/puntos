@@ -1,70 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'app/constants/app_colors.dart';
-import 'features/auth/auth_provider.dart';
-import 'features/auth/login_page.dart';
-import 'features/home/home_page.dart';
+import 'core/theme/app_theme.dart';
+import 'features/auth/presentation/providers/auth_provider.dart';
+import 'routes/app_router.dart';
 
-void main() {
-  runApp(const PuntosPionierApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Inicializar AuthProvider
+  final authProvider = await createAuthProvider();
+
+  runApp(MyApp(authProvider: authProvider));
 }
 
-class PuntosPionierApp extends StatelessWidget {
-  const PuntosPionierApp({super.key});
+class MyApp extends StatelessWidget {
+  final AuthProvider authProvider;
+
+  const MyApp({super.key, required this.authProvider});
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [ChangeNotifierProvider(create: (_) => AuthProvider())],
-      child: MaterialApp(
-        title: 'Puntos Pionier',
+    return ChangeNotifierProvider.value(
+      value: authProvider,
+      child: MaterialApp.router(
+        title: 'PionierPuntos',
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          primaryColor: AppColors.primary,
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: AppColors.primary,
-            brightness: Brightness.light,
-          ),
-          useMaterial3: true,
-          fontFamily: 'Roboto',
-          appBarTheme: const AppBarTheme(
-            backgroundColor: AppColors.primary,
-            foregroundColor: AppColors.onPrimary,
-            elevation: 0,
-          ),
-        ),
-        initialRoute: '/login',
-        routes: {
-          '/login': (context) => const LoginPage(),
-          '/home': (context) => const AuthGuard(child: HomePage()),
-        },
+        theme: AppTheme.lightTheme,
+        darkTheme: AppTheme.darkTheme,
+        themeMode: ThemeMode.light,
+        routerConfig: router,
       ),
-    );
-  }
-}
-
-/// Simple auth guard to protect routes
-class AuthGuard extends StatelessWidget {
-  final Widget child;
-
-  const AuthGuard({super.key, required this.child});
-
-  @override
-  Widget build(BuildContext context) {
-    return Consumer<AuthProvider>(
-      builder: (context, authProvider, _) {
-        if (authProvider.isAuthenticated) {
-          return child;
-        } else {
-          // Redirect to login if not authenticated
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            Navigator.pushReplacementNamed(context, '/login');
-          });
-          return const Scaffold(
-            body: Center(child: CircularProgressIndicator()),
-          );
-        }
-      },
     );
   }
 }
