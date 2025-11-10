@@ -15,10 +15,7 @@ class HomeScreen extends StatelessWidget {
     return Consumer<AuthProvider>(
       builder: (context, authProvider, child) {
         final authState = authProvider.state;
-        String userName = 'Usuario';
-        if (authState is Authenticated) {
-          userName = authState.user.nombreCompleto;
-        }
+        if (authState is Authenticated) {}
         return Scaffold(
           appBar: AppBar(
             title: const Text('Inicio'),
