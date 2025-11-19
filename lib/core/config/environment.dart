@@ -9,16 +9,16 @@ class Environment {
   static String get baseUrl {
     // Usar la IP de la red local para todas las plataformas en desarrollo
     if (kDebugMode) {
-      return 'http://10.80.40.156:8383';
+      return 'http://191.98.147.53:8383';
     }
 
     // En producción, usa tu URL de producción
-    return 'https://api.pionierpuntos.com';
+    return 'http://191.98.147.53:8383';
   }
 
   /// URL base alternativa para dispositivos físicos
   /// Reemplaza con tu IP local cuando pruebes en un dispositivo físico
-  static const String localIpUrl = 'http://10.80.40.156:8383';
+  static const String localIpUrl = 'http://191.98.147.53:8383';
 
   /// Usar IP local en lugar de localhost/10.0.2.2
   static bool useLocalIp = false;

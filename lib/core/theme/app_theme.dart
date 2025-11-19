@@ -143,10 +143,7 @@ class AppTheme {
     ),
 
     // Icon Theme
-    iconTheme: const IconThemeData(
-      color: AppColors.textPrimary,
-      size: 24,
-    ),
+    iconTheme: const IconThemeData(color: AppColors.textPrimary, size: 24),
 
     // Floating Action Button Theme
     floatingActionButtonTheme: const FloatingActionButtonThemeData(
@@ -165,22 +162,160 @@ class AppTheme {
     ),
   );
 
-  /// Tema oscuro (puedes personalizarlo)
+  /// Tema oscuro
   static ThemeData darkTheme = ThemeData(
     useMaterial3: true,
     brightness: Brightness.dark,
     primaryColor: AppColors.primary,
-    scaffoldBackgroundColor: AppColors.black,
+    scaffoldBackgroundColor: const Color(0xFF121212),
     colorScheme: const ColorScheme.dark(
       primary: AppColors.primary,
       secondary: AppColors.secondary,
-      surface: AppColors.surfaceDark,
+      surface: Color(0xFF1E1E1E),
       error: AppColors.error,
       onPrimary: AppColors.white,
-      onSecondary: AppColors.black,
+      onSecondary: AppColors.white,
       onSurface: AppColors.white,
       onError: AppColors.white,
     ),
-    // Aquí puedes agregar más personalizaciones para el tema oscuro
+
+    // AppBar Theme
+    appBarTheme: const AppBarTheme(
+      backgroundColor: Color(0xFF1E1E1E),
+      foregroundColor: AppColors.white,
+      elevation: 0,
+      centerTitle: true,
+      systemOverlayStyle: SystemUiOverlayStyle.light,
+      titleTextStyle: TextStyle(
+        fontSize: 20,
+        fontWeight: FontWeight.w600,
+        color: AppColors.white,
+      ),
+      iconTheme: IconThemeData(color: AppColors.white),
+    ),
+
+    // Text Theme
+    textTheme: TextTheme(
+      displayLarge: AppTextStyles.h1.copyWith(color: AppColors.white),
+      displayMedium: AppTextStyles.h2.copyWith(color: AppColors.white),
+      displaySmall: AppTextStyles.h3.copyWith(color: AppColors.white),
+      headlineMedium: AppTextStyles.h4.copyWith(color: AppColors.white),
+      headlineSmall: AppTextStyles.h5.copyWith(color: AppColors.white),
+      titleLarge: AppTextStyles.h6.copyWith(color: AppColors.white),
+      bodyLarge: AppTextStyles.bodyLarge.copyWith(color: AppColors.white),
+      bodyMedium: AppTextStyles.bodyMedium.copyWith(color: AppColors.white),
+      bodySmall: AppTextStyles.bodySmall.copyWith(
+        color: const Color(0xFFB0B0B0),
+      ),
+      labelLarge: AppTextStyles.button.copyWith(color: AppColors.white),
+      labelMedium: AppTextStyles.label.copyWith(color: const Color(0xFFB0B0B0)),
+      labelSmall: AppTextStyles.caption.copyWith(
+        color: const Color(0xFF808080),
+      ),
+    ),
+
+    // Elevated Button Theme
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: AppColors.primary,
+        foregroundColor: AppColors.white,
+        minimumSize: const Size(double.infinity, AppConstants.buttonHeight),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppConstants.borderRadius),
+        ),
+        elevation: 2,
+        textStyle: AppTextStyles.button,
+      ),
+    ),
+
+    // Text Button Theme
+    textButtonTheme: TextButtonThemeData(
+      style: TextButton.styleFrom(
+        foregroundColor: AppColors.primary,
+        textStyle: AppTextStyles.button,
+      ),
+    ),
+
+    // Outlined Button Theme
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: OutlinedButton.styleFrom(
+        foregroundColor: AppColors.primary,
+        minimumSize: const Size(double.infinity, AppConstants.buttonHeight),
+        side: const BorderSide(color: AppColors.primary, width: 1.5),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppConstants.borderRadius),
+        ),
+        textStyle: AppTextStyles.button,
+      ),
+    ),
+
+    // Input Decoration Theme
+    inputDecorationTheme: InputDecorationTheme(
+      filled: true,
+      fillColor: const Color(0xFF2C2C2C),
+      contentPadding: const EdgeInsets.symmetric(
+        horizontal: AppConstants.defaultPadding,
+        vertical: AppConstants.defaultPadding,
+      ),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(AppConstants.borderRadius),
+        borderSide: const BorderSide(color: Color(0xFF404040)),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(AppConstants.borderRadius),
+        borderSide: const BorderSide(color: Color(0xFF404040)),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(AppConstants.borderRadius),
+        borderSide: const BorderSide(color: AppColors.primary, width: 2),
+      ),
+      errorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(AppConstants.borderRadius),
+        borderSide: const BorderSide(color: AppColors.error),
+      ),
+      focusedErrorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(AppConstants.borderRadius),
+        borderSide: const BorderSide(color: AppColors.error, width: 2),
+      ),
+      labelStyle: AppTextStyles.label.copyWith(color: const Color(0xFFB0B0B0)),
+      hintStyle: AppTextStyles.hint.copyWith(color: const Color(0xFF808080)),
+      errorStyle: AppTextStyles.error,
+    ),
+
+    // Card Theme
+    cardTheme: CardThemeData(
+      color: const Color(0xFF1E1E1E),
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppConstants.borderRadius),
+      ),
+      margin: const EdgeInsets.all(AppConstants.smallPadding),
+    ),
+
+    // Divider Theme
+    dividerTheme: const DividerThemeData(
+      color: Color(0xFF404040),
+      thickness: 1,
+      space: AppConstants.defaultPadding,
+    ),
+
+    // Icon Theme
+    iconTheme: const IconThemeData(color: AppColors.white, size: 24),
+
+    // Floating Action Button Theme
+    floatingActionButtonTheme: const FloatingActionButtonThemeData(
+      backgroundColor: AppColors.primary,
+      foregroundColor: AppColors.white,
+      elevation: 4,
+    ),
+
+    // Bottom Navigation Bar Theme
+    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+      backgroundColor: Color(0xFF1E1E1E),
+      selectedItemColor: AppColors.primary,
+      unselectedItemColor: Color(0xFF808080),
+      type: BottomNavigationBarType.fixed,
+      elevation: 8,
+    ),
   );
 }

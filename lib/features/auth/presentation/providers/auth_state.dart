@@ -34,6 +34,16 @@ class Unauthenticated extends AuthState {
   const Unauthenticated();
 }
 
+/// Estado que indica que el registro se completó correctamente
+class Registered extends AuthState {
+  final String? message;
+
+  const Registered([this.message]);
+
+  @override
+  List<Object?> get props => [message];
+}
+
 /// Estado de error
 class AuthError extends AuthState {
   final String message;

@@ -41,4 +41,18 @@ class AppColors {
   // Colores con opacidad
   static const Color shadow = Color(0x1A000000);
   static const Color overlay = Color(0x80000000);
+
+  // Alias para compatibilidad
+  static const Color onPrimary = white;
+  static const Color themeColor2 = Color(0xFF1976D2);
+  static const Color themeColor3 = Color(0xFF757575);
+  static const Color themeBgVitrina = Color(0xFFE3F2FD);
+  static const Color textColorLight = Color(0xFF757575);
+
+  // Gradientes
+  static const LinearGradient primaryGradient = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [primary, primaryDark],
+  );
 }

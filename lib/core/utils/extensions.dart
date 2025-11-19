@@ -24,7 +24,11 @@ extension ContextExtensions on BuildContext {
   void pop<T>([T? result]) => Navigator.of(this).pop(result);
 
   /// Mostrar SnackBar
-  void showSnackBar(String message, {Duration? duration, Color? backgroundColor}) {
+  void showSnackBar(
+    String message, {
+    Duration? duration,
+    Color? backgroundColor,
+  }) {
     ScaffoldMessenger.of(this).showSnackBar(
       SnackBar(
         content: Text(message),
@@ -36,18 +40,12 @@ extension ContextExtensions on BuildContext {
 
   /// Mostrar SnackBar de error
   void showErrorSnackBar(String message) {
-    showSnackBar(
-      message,
-      backgroundColor: colorScheme.error,
-    );
+    showSnackBar(message, backgroundColor: colorScheme.error);
   }
 
   /// Mostrar SnackBar de éxito
   void showSuccessSnackBar(String message) {
-    showSnackBar(
-      message,
-      backgroundColor: Colors.green,
-    );
+    showSnackBar(message, backgroundColor: Colors.green);
   }
 
   /// Ocultar el teclado
@@ -81,6 +79,24 @@ extension StringExtensions on String {
   String truncate(int maxLength) {
     if (length <= maxLength) return this;
     return '${substring(0, maxLength)}...';
+  }
+
+  /// Ocultar email parcialmente (ej: wil*****@gmail.com)
+  String get maskEmail {
+    if (!contains('@')) return this;
+
+    final parts = split('@');
+    if (parts.length != 2) return this;
+
+    final username = parts[0];
+    final domain = parts[1];
+
+    if (username.length <= 3) {
+      return '${username[0]}***@$domain';
+    }
+
+    final visibleChars = username.substring(0, 3);
+    return '$visibleChars*****@$domain';
   }
 }
 

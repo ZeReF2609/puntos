@@ -13,12 +13,13 @@ class RouteConstants {
   static const String offers = '/offers';
   static const String profile = '/profile';
   static const String settings = '/settings';
+  static const String pendingReview = '/pending-review';
 
   // Rutas con parámetros
   static const String userDetails = '/user/:id';
   static const String offerDetail = '/offer/:id';
   static const String pointsHistory = '/points/history';
-  
+
   // Nombres de rutas (para GoRouter)
   static const String splashName = 'splash';
   static const String loginName = 'login';
@@ -29,6 +30,7 @@ class RouteConstants {
   static const String offersName = 'offers';
   static const String profileName = 'profile';
   static const String settingsName = 'settings';
+  static const String pendingReviewName = 'pendingReview';
   static const String offerDetailName = 'offerDetail';
   static const String pointsHistoryName = 'pointsHistory';
 }

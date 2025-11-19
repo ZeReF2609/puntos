@@ -1,14 +1,8 @@
-/// Excepciones personalizadas de la aplicación
-/// Estas se lanzan en las capas de datos
-
 class ServerException implements Exception {
   final String message;
   final int? statusCode;
 
-  ServerException({
-    required this.message,
-    this.statusCode,
-  });
+  ServerException({required this.message, this.statusCode});
 
   @override
   String toString() => 'ServerException: $message (Status: $statusCode)';
@@ -57,4 +51,15 @@ class UnknownException implements Exception {
 
   @override
   String toString() => 'UnknownException: $message';
+}
+
+/// Excepción para cuenta inactiva (no verificada)
+class InactiveAccountException implements Exception {
+  final String message;
+  final Map<String, dynamic>? userData;
+
+  InactiveAccountException({required this.message, this.userData});
+
+  @override
+  String toString() => 'InactiveAccountException: $message';
 }

@@ -7,10 +7,10 @@ class MainNavigationScreen extends ConsumerStatefulWidget {
   final String location;
 
   const MainNavigationScreen({
-    Key? key,
+    super.key,
     required this.child,
     required this.location,
-  }) : super(key: key);
+  });
 
   @override
   ConsumerState<MainNavigationScreen> createState() => _MainNavigationScreenState();

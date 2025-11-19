@@ -59,16 +59,8 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<void> logout() async {
-    final token = await localDataSource.getAccessToken();
-
-    if (token != null) {
-      try {
-        await remoteDataSource.logout(token);
-      } catch (e) {
-        // Continuamos aunque falle el logout remoto
-      }
-    }
-
+    // The backend no longer exposes a logout endpoint. Perform local sign-out
+    // by clearing stored tokens and user data.
     await localDataSource.clearAuthData();
   }
 
@@ -103,5 +95,79 @@ class AuthRepositoryImpl implements AuthRepository {
     );
 
     return newAccessToken;
+  }
+
+  @override
+  Future<void> changePassword({
+    required String oldPassword,
+    required String newPassword,
+  }) async {
+    final token = await localDataSource.getAccessToken();
+
+    if (token == null) {
+      throw CacheException(message: 'No hay token de acceso');
+    }
+
+    await remoteDataSource.changePassword(
+      token: token,
+      oldPassword: oldPassword,
+      newPassword: newPassword,
+    );
+  }
+
+  @override
+  Future<void> requestPasswordRecovery({required String numDocumento}) async {
+    await remoteDataSource.requestPasswordRecovery(numDocumento: numDocumento);
+  }
+
+  @override
+  Future<void> resetPassword({
+    required String numDocumento,
+    required String code,
+    required String newPassword,
+  }) async {
+    await remoteDataSource.resetPassword(
+      numDocumento: numDocumento,
+      code: code,
+      newPassword: newPassword,
+    );
+  }
+
+  @override
+  Future<Map<String, dynamic>> activateAccount(String token) async {
+    return await remoteDataSource.activateAccount(token);
+  }
+
+  @override
+  Future<Map<String, dynamic>?> loginWithInactiveCheck({
+    required String numDocumento,
+    required String password,
+  }) async {
+    return await remoteDataSource.loginWithInactiveCheck(
+      numDocumento: numDocumento,
+      password: password,
+    );
+  }
+
+  @override
+  Future<void> resendActivationEmail({
+    required int codUser,
+    required String numDocumento,
+    required String correo,
+    required String nombre,
+  }) async {
+    await remoteDataSource.resendActivationEmail(
+      codUser: codUser,
+      numDocumento: numDocumento,
+      correo: correo,
+      nombre: nombre,
+    );
+  }
+
+  @override
+  Future<Map<String, dynamic>> checkInactiveAccount({
+    required String identifier,
+  }) async {
+    return await remoteDataSource.checkInactiveAccount(identifier: identifier);
   }
 }
