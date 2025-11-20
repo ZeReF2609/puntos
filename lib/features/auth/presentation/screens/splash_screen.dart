@@ -7,7 +7,6 @@ import '../../../../core/constants/app_constants.dart';
 import '../../../../core/constants/route_constants.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/widgets/loading_widget.dart';
-import '../../../../core/utils/extensions.dart';
 import '../providers/auth_provider.dart';
 import '../providers/auth_state.dart';
 
