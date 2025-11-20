@@ -1,47 +1,35 @@
-name: Build iOS (IPA, no codesign)
+name: Build iOS (no signing)
 
 on:
-  push:
-    branches: [ main, master ]
-  workflow_dispatch: {}
+  workflow_dispatch:
 
 jobs:
   build_ios:
     runs-on: macos-latest
     timeout-minutes: 60
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Set up Flutter
-        uses: subosito/flutter-action@v2
+        uses: subosito/flutter-action@v3
         with:
           flutter-version: 'stable'
-          cache: true
 
       - name: Install dependencies
-        run: |
-          flutter pub get
+        run: flutter pub get
 
-      - name: Install CocoaPods
-        run: |
-          sudo gem install cocoapods -v 1.12.0 || true
-          pod --version || true
+      - name: Build iOS for simulator
+        run: flutter build ios --simulator --verbose
 
-      - name: Build iOS IPA (no codesign)
-        env:
-          CI: true
-        run: |
-          flutter build ipa --release --no-codesign
+      - name: Build IPA (no signing)
+        run: flutter build ipa --no-codesign
 
-      - name: Upload IPA artifact
-        if: success()
+      - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: ios-ipa
-          path: build/ios/ipa/*.ipa
-
-# Notes:
-# - This workflow builds an unsigned IPA (uses `--no-codesign`).
-# - To produce a signed IPA for TestFlight/AppStore you must add code signing (certs + provisioning profile) or use Fastlane Match / App Store Connect API keys.
-# - See README below for instructions to add signing secrets to your GitHub repo.
+          name: ios-build
+          path: |
+            build/ios/ipa/*.ipa
+            build/ios/iphonesimulator/
