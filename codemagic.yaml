@@ -1,0 +1,57 @@
+workflows:
+  ios-debug-workflow:
+    name: iOS Debug Build (Sin firma)
+    max_build_duration: 30
+    instance_type: mac_mini_m2
+    
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: 'main'
+          include: true
+          source: true
+    
+    environment:
+      flutter: stable
+      xcode: latest
+      cocoapods: default
+      
+    scripts:
+      - name: Obtener versión de Flutter
+        script: |
+          flutter --version
+          
+      - name: Instalar dependencias
+        script: |
+          flutter pub get
+          
+      - name: Analizar código
+        script: |
+          flutter analyze
+          
+      - name: Compilar iOS (Debug - sin firma)
+        script: |
+          flutter build ios --debug --no-codesign
+          
+      - name: Crear IPA sin firma
+        script: |
+          cd build/ios/iphoneos
+          mkdir -p Payload
+          cp -r Runner.app Payload/
+          zip -r ../../../app-debug-unsigned.ipa Payload/
+          cd ../../..
+          echo "✅ IPA creado: app-debug-unsigned.ipa"
+    
+    artifacts:
+      - build/ios/iphoneos/Runner.app
+      - app-debug-unsigned.ipa
+      - flutter_drive.log
+      
+    publishing:
+      email:
+        recipients:
+          - desarrollo.ti@grupopionier.pe
+        notify:
+          success: true
+          failure: true
