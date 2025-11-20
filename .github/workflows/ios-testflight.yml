@@ -1,0 +1,67 @@
+name: Build and Upload to TestFlight
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch: {}
+
+jobs:
+  build_and_upload:
+    runs-on: macos-latest
+    timeout-minutes: 90
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 'stable'
+          cache: true
+
+      - name: Install dependencies
+        run: |
+          flutter pub get
+
+      - name: Install CocoaPods
+        run: |
+          sudo gem install cocoapods -v 1.12.0 || true
+          cd ios
+          pod install --repo-update || true
+
+      - name: Decode App Store Connect API Key
+        env:
+          P8_BASE64: ${{ secrets.APP_STORE_CONNECT_API_KEY }}
+        run: |
+          if [ -z "$P8_BASE64" ]; then echo 'APP_STORE_CONNECT_API_KEY secret missing' && exit 1; fi
+          echo "$P8_BASE64" | base64 --decode > ios/AuthKey.p8
+          ls -la ios/AuthKey.p8
+
+      - name: Install Fastlane
+        run: |
+          sudo gem install fastlane -NV
+
+      - name: Run Fastlane lane (build + upload to TestFlight)
+        env:
+          APP_STORE_KEY_ID: ${{ secrets.APP_STORE_KEY_ID }}
+          APP_STORE_ISSUER_ID: ${{ secrets.APP_STORE_ISSUER_ID }}
+          APP_IDENTIFIER: ${{ secrets.APP_IDENTIFIER }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+        run: |
+          fastlane ios ci
+
+      - name: Upload artifacts (ipa)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-artifacts
+          path: |
+            build/ios/ipa/*.ipa
+            ios/fastlane/report.xml
+
+# Required repo secrets:
+# - APP_STORE_CONNECT_API_KEY : base64 encoded .p8 file content
+# - APP_STORE_KEY_ID         : Key ID of the API key
+# - APP_STORE_ISSUER_ID      : Issuer ID (UUID)
+# - APP_IDENTIFIER          : Bundle identifier (com.example.app)
+# - APPLE_ID                : Apple ID (email) optional but recommended
